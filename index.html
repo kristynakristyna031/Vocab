@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="cs"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#111318"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icons/icon-180.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="VOCAB"><title>VOCAB</title>
+<style>
+:root{--bg:#111318;--panel:#191c23;--panel2:#20242d;--line:#303540;--text:#f0f2f5;--muted:#9299a7;--blue:#83b8ff;--green:#7ad6a5;--red:#ff9292;--btn:#102035;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#f5f6f8;--panel:#fff;--panel2:#eef0f4;--line:#d7dbe3;--text:#161a22;--muted:#5d6675;--blue:#1f63c4;--green:#12804f;--red:#c43636;--btn:#fff}}
+:root[data-theme="light"]{--bg:#f5f6f8;--panel:#fff;--panel2:#eef0f4;--line:#d7dbe3;--text:#161a22;--muted:#5d6675;--blue:#1f63c4;--green:#12804f;--red:#c43636;--btn:#fff}
+:root[data-theme="dark"]{--bg:#111318;--panel:#191c23;--panel2:#20242d;--line:#303540;--text:#f0f2f5;--muted:#9299a7;--blue:#83b8ff;--green:#7ad6a5;--red:#ff9292;--btn:#102035}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.45}
+button,input,textarea{font:inherit}button{cursor:pointer}
+:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+.wrap{max-width:900px;margin:auto;padding:0 20px}
+header{display:flex;justify-content:space-between;align-items:center;padding:22px 0 14px}
+.logo{font-size:28px;letter-spacing:-1.5px}.logo span{color:var(--blue)}
+header small{display:block;font-size:10px;letter-spacing:1.4px;color:var(--muted)}
+nav{display:flex;gap:6px;padding-bottom:14px;border-bottom:1px solid var(--line);overflow-x:auto}
+.tab,.mode,.secondary{background:var(--panel2);border:1px solid var(--line);color:var(--text);border-radius:10px;padding:10px 13px;white-space:nowrap}
+.tab{background:transparent;border-color:transparent;color:var(--muted)}
+.tab.active,.mode.active{border-color:var(--blue);color:var(--text);background:var(--panel2)}
+.mode{background:transparent;font-size:13px}
+#count{color:var(--blue)}
+main{padding:28px 0 40px;min-height:60vh}
+.view{display:none}.view.active{display:block}
+.heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px}
+.heading small{font-size:11px;letter-spacing:1.5px;color:var(--muted);font-weight:700}
+h1{font-size:clamp(28px,4vw,36px);letter-spacing:-1.2px;line-height:1.1;margin:4px 0}
+.modes{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px}
+.card{max-width:650px;margin:auto;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:clamp(22px,5vw,42px);text-align:center;min-height:330px}
+.lang{font-weight:700;font-size:11px;letter-spacing:1.5px;display:block}
+.en{color:var(--blue)}.cs{color:var(--green)}
+.question{font-size:clamp(28px,6vw,44px);font-weight:600;letter-spacing:-1px;line-height:1.2;overflow-wrap:anywhere;margin-top:16px}
+.hint{color:var(--muted);font-size:14px;margin:16px 0 20px}
+#answerForm{display:flex;flex-direction:column;gap:10px}
+input[type=text],input[type=search],textarea{width:100%;background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:12px;padding:14px;min-height:50px}
+#answer{text-align:center;font-size:17px}
+textarea{resize:vertical;min-height:72px}
+.primary{border:0;border-radius:12px;padding:13px 17px;background:var(--blue);color:var(--btn);font-weight:700}
+.primary:disabled{opacity:.35}
+#feedback{margin:12px 0;min-height:22px;font-size:15px}
+.good{color:var(--green)}.bad{color:var(--red)}
+.row{display:flex;gap:8px}.row>*{flex:1}
+.note{font-size:12px;color:var(--muted);line-height:1.6;max-width:650px;margin:14px auto}
+.opt{display:flex;gap:8px;align-items:center;font-size:13px;color:var(--muted);justify-content:center;margin-top:14px}
+.list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:14px}
+.word{border:1px solid var(--line);background:var(--panel);padding:15px;border-radius:14px;overflow-wrap:anywhere}
+.w-en{color:var(--blue);font-weight:600}.w-cs{color:var(--green);margin-top:6px}
+.actions{display:flex;justify-content:flex-end;gap:7px;margin-top:12px}
+.actions button{background:transparent;color:var(--muted);border:1px solid var(--line);border-radius:8px;padding:7px 10px;font-size:12px}
+#wordForm{max-width:650px;display:flex;flex-direction:column;gap:9px}
+label{font-weight:600;font-size:14px;margin-top:6px}
+#wordForm .note{margin:0 0 4px}
+.backup{max-width:650px;padding:20px;background:var(--panel);border:1px solid var(--line);border-radius:16px;margin-bottom:12px}
+.backup h2{font-size:18px;margin:0 0 8px}.backup p{font-size:14px;color:var(--muted)}
+.file{display:inline-flex;cursor:pointer}
+[hidden]{display:none!important}
+footer{border-top:1px solid var(--line);padding:18px 0 28px;font-size:11px;letter-spacing:1px;color:var(--muted)}
+@media(max-width:620px){.wrap{padding:0 16px}.list{grid-template-columns:1fr}.modes{display:grid;grid-template-columns:1fr 1fr}.mode:first-child{grid-column:1/-1}.tab{font-size:12px;padding:9px 11px}}
+</style></head>
+<body><div class="wrap">
+<header><div><strong class="logo">VOCAB<span>.</span></strong><small>OSOBNÍ ANGLICKÝ SLOVNÍČEK</small></div></header>
+<nav>
+<button class="tab active" data-view="practice">Procvičovat</button>
+<button class="tab" data-view="database">Slovníček <span id="count">0</span></button>
+<button class="tab" data-view="manage">Přidat slovo</button>
+<button class="tab" data-view="backup">Záloha</button>
+</nav>
+<main>
+
+<section id="practice" class="view active">
+<div class="heading"><div><small>AKTIVNÍ VYBAVOVÁNÍ</small><h1>Procvičování</h1></div><span id="progress" class="note"></span></div>
+<div class="modes">
+<button class="mode active" data-mode="random">Oba směry náhodně</button>
+<button class="mode" data-mode="en-cs">EN → CZ</button>
+<button class="mode" data-mode="cs-en">CZ → EN</button>
+</div>
+<article class="card">
+<small id="lang" class="lang en"></small>
+<div id="question" class="question"></div>
+<p id="hint" class="hint"></p>
+<form id="answerForm" autocomplete="off">
+<input type="text" id="answer" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" disabled>
+<button class="primary" id="check" disabled>Zkontrolovat</button>
+</form>
+<div id="feedback" aria-live="polite"></div>
+<div class="row" id="afterRow" hidden>
+<button type="button" id="override" class="secondary" hidden>Mám to správně</button>
+<button type="button" id="next" class="primary">Další slovíčko</button>
+</div>
+<label class="opt"><input type="checkbox" id="diacritics" checked> Ignorovat diakritiku (prijit = přijít)</label>
+</article>
+<p class="note">Kontrola ignoruje velikost písmen a mezery navíc. Stačí napsat jednu z uložených variant. Slova, která ti nejdou, se objevují častěji.</p>
+</section>
+
+<section id="database" class="view">
+<div class="heading"><div><small>TVÁ KOLEKCE</small><h1>Slovníček</h1></div><button class="secondary" id="add">+ Přidat</button></div>
+<input type="search" id="search" placeholder="Hledat anglicky nebo česky…">
+<div id="list" class="list"></div>
+<p id="empty" class="note"></p>
+</section>
+
+<section id="manage" class="view">
+<div class="heading"><div><small>ROZŠIŘUJ DATABÁZI</small><h1 id="formHeading">Přidat slovíčko</h1></div></div>
+<form id="wordForm">
+<input id="editId" type="hidden">
+<label class="en" for="en">Anglický výraz</label>
+<textarea id="en" rows="2" required placeholder="např. to figure out"></textarea>
+<p class="note">Více variant odděl čárkou nebo středníkem.</p>
+<label class="cs" for="cs">Český význam</label>
+<textarea id="cs" rows="2" required placeholder="např. přijít na něco; vyřešit"></textarea>
+<p class="note">Více variant odděl čárkou nebo středníkem.</p>
+<button class="primary">Uložit slovíčko</button>
+<button class="secondary" type="button" id="cancel" hidden>Zrušit úpravy</button>
+<p id="formMessage" aria-live="polite"></p>
+</form>
+</section>
+
+<section id="backup" class="view">
+<div class="heading"><div><small>TVÁ DATA, TVOJE KONTROLA</small><h1>Záloha</h1></div></div>
+<article class="backup"><h2>Exportovat slovíčka</h2><p>Ulož databázi do souboru JSON a přenes ji mezi zařízeními.</p><button class="primary" id="export">Stáhnout zálohu</button></article>
+<article class="backup"><h2>Importovat slovíčka</h2><p>Vyber dříve vytvořenou zálohu. Nová slova se přidají, existující se přeskočí, takže nevzniknou duplicity.</p>
+<label class="secondary file" for="import">Vybrat soubor JSON</label><input id="import" type="file" accept=".json,application/json" hidden><p id="backupMessage" aria-live="polite"></p></article>
+<p class="note">Slovíčka se ukládají jen v tomto prohlížeči a zařízení. Prohlížeč je může při vyčištění dat smazat, proto si pravidelně stahuj zálohu.</p>
+</section>
+
+</main>
+<footer>VOCAB.</footer>
+</div>
+<script>
+const KEY='vocab-dictionary-v1',SKEY='vocab-settings-v1';
+const $=i=>document.getElementById(i);
+let words=read(),mode='random',current=null,dir='en-cs',answered=false,round=0,lastId=null,lastOk=false;
+let settings={diacritics:true};
+try{settings=Object.assign(settings,JSON.parse(localStorage.getItem(SKEY)||'{}'))}catch(e){}
+$('diacritics').checked=settings.diacritics;
+
+function read(){try{const x=JSON.parse(localStorage.getItem(KEY)||'[]');return Array.isArray(x)?x.filter(w=>w&&Array.isArray(w.en)&&Array.isArray(w.cs)).map(w=>({id:w.id||uid(),en:w.en,cs:w.cs,ok:w.ok|0,bad:w.bad|0})):[]}catch(e){return[]}}
+function save(){$('count').textContent=words.length;try{localStorage.setItem(KEY,JSON.stringify(words));return true}catch(e){alert('Slovíčka se nepodařilo uložit do prohlížeče. Stáhni si zálohu.');return false}}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
+function variants(s){return[...new Set(String(s).split(/[;,]+/).map(x=>x.replace(/\s+/g,' ').trim()).filter(Boolean))]}
+function norm(s,strip){let t=String(s).trim().replace(/\s+/g,' ').toLocaleLowerCase();if(strip)t=t.normalize('NFD').replace(/[\u0300-\u036f]/g,'');return t}
+function cmp(s){return norm(s,settings.diacritics).replace(/^to /,'')}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function key(w){return norm(w.en.join('|'),true)+'#'+norm([...w.cs].sort().join('|'),true)}
+
+function view(v){
+ document.querySelectorAll('.view').forEach(x=>x.classList.toggle('active',x.id===v));
+ document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.view===v));
+ if(v==='database')render();
+ if(v==='practice')question();
+ if(v==='manage'&&!$('editId').value)$('formMessage').textContent='';
+ scrollTo(0,0);
+}
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>view(b.dataset.view));
+$('add').onclick=()=>{resetForm();view('manage')};
+document.querySelectorAll('.mode').forEach(b=>b.onclick=()=>{mode=b.dataset.mode;document.querySelectorAll('.mode').forEach(x=>x.classList.toggle('active',x===b));question()});
+$('diacritics').onchange=e=>{settings.diacritics=e.target.checked;try{localStorage.setItem(SKEY,JSON.stringify(settings))}catch(x){}};
+
+function pick(){
+ const pool=words.length>1?words.filter(w=>w.id!==lastId):words;
+ const wt=pool.map(w=>Math.max(.3,1+w.bad*1.5-Math.min(w.ok,4)*.2));
+ let r=Math.random()*wt.reduce((a,b)=>a+b,0);
+ for(let i=0;i<pool.length;i++){r-=wt[i];if(r<=0)return pool[i]}
+ return pool[pool.length-1];
+}
+function question(){
+ answered=false;$('feedback').textContent='';$('feedback').className='';$('afterRow').hidden=true;$('override').hidden=true;
+ $('answerForm').hidden=false;$('answer').value='';
+ if(!words.length){
+  current=null;$('lang').textContent='ZAČNI SVŮJ SLOVNÍČEK';$('lang').className='lang';
+  $('question').textContent='Přidej první slovíčko';$('question').className='question';
+  $('hint').textContent='Vytvoř si vlastní databázi výrazů v záložce „Přidat slovo“.';
+  $('answer').disabled=$('check').disabled=true;$('progress').textContent='0 slov';return;
+ }
+ current=pick();lastId=current.id;
+ dir=mode==='random'?(Math.random()<.5?'en-cs':'cs-en'):mode;
+ const isEn=dir==='en-cs';
+ $('lang').textContent=isEn?'ENGLISH':'ČEŠTINA';$('lang').className='lang '+(isEn?'en':'cs');
+ $('question').textContent=(isEn?current.en:current.cs).join(' / ');$('question').className='question '+(isEn?'en':'cs');
+ $('hint').textContent=isEn?'Napiš český význam.':'Napiš anglický výraz.';
+ $('answer').placeholder=isEn?'Český překlad…':'English translation…';
+ $('answer').disabled=$('check').disabled=false;
+ $('progress').textContent='Hotovo: '+round;
+ $('answer').focus({preventScroll:true});
+}
+function mark(ok){current.ok+=ok?1:0;current.bad+=ok?0:1;save()}
+$('answerForm').onsubmit=e=>{
+ e.preventDefault();
+ const val=$('answer').value;
+ if(!current||answered||!val.trim())return;
+ answered=true;
+ const accepted=dir==='en-cs'?current.cs:current.en;
+ $('answer').disabled=$('check').disabled=true;$('answerForm').hidden=true;
+ lastOk=accepted.some(x=>cmp(x)===cmp(val));
+ if(lastOk){$('feedback').textContent='Správně.';$('feedback').className='good'}
+ else{$('feedback').innerHTML='<span class="bad">Nesprávně.</span> Správná odpověď: <strong class="'+(dir==='en-cs'?'cs':'en')+'">'+accepted.map(esc).join(' · ')+'</strong>';$('override').hidden=false}
+ mark(lastOk);round++;$('progress').textContent='Hotovo: '+round;
+ $('afterRow').hidden=false;$('next').focus({preventScroll:true});
+};
+$('override').onclick=()=>{
+ if(lastOk)return;lastOk=true;
+ current.bad=Math.max(0,current.bad-1);current.ok++;save();
+ $('feedback').textContent='Uznáno jako správně.';$('feedback').className='good';$('override').hidden=true;
+};
+$('next').onclick=question;
+
+function resetForm(){$('wordForm').reset();$('editId').value='';$('formHeading').textContent='Přidat slovíčko';$('cancel').hidden=true;$('formMessage').textContent=''}
+$('cancel').onclick=()=>{resetForm();view('database')};
+$('wordForm').onsubmit=e=>{
+ e.preventDefault();
+ const en=variants($('en').value),cs=variants($('cs').value),edit=$('editId').value;
+ if(!en.length||!cs.length)return;
+ if([...en,...cs].some(x=>x.length<2)&&!confirm('Některá varianta má jen jeden znak. Opravdu uložit?'))return;
+ const cand={en,cs};
+ if(words.some(w=>w.id!==edit&&key(w)===key(cand))){$('formMessage').textContent='Toto slovíčko už ve slovníčku je.';$('formMessage').className='bad';return}
+ if(edit){const i=words.findIndex(w=>w.id===edit);if(i>=0)words[i]=Object.assign(words[i],{en,cs});
+  if(save()){resetForm();view('database')}return}
+ words.push({id:uid(),en,cs,ok:0,bad:0});
+ if(save()){$('wordForm').reset();$('formMessage').textContent='Uloženo. Můžeš přidat další.';$('formMessage').className='good';$('en').focus()}
+};
+
+function render(){
+ const q=norm($('search').value||'',true);
+ const f=words.filter(w=>[...w.en,...w.cs].some(x=>norm(x,true).includes(q)));
+ $('list').innerHTML=f.map(w=>'<article class="word"><div class="w-en">'+w.en.map(esc).join(' · ')+'</div><div class="w-cs">'+w.cs.map(esc).join(' · ')+'</div><div class="actions"><button data-edit="'+w.id+'">Upravit</button><button data-del="'+w.id+'">Smazat</button></div></article>').join('');
+ $('empty').hidden=f.length>0;
+ $('empty').textContent=words.length?'Nic takového jsem nenašel.':'Zatím tu nejsou žádná slovíčka. Přidej první tlačítkem nahoře.';
+}
+$('list').onclick=e=>{
+ const b=e.target.closest('button');if(!b)return;
+ if(b.dataset.edit){const w=words.find(x=>x.id===b.dataset.edit);if(!w)return;
+  $('editId').value=w.id;$('en').value=w.en.join('; ');$('cs').value=w.cs.join('; ');
+  $('formHeading').textContent='Upravit slovíčko';$('cancel').hidden=false;$('formMessage').textContent='';view('manage')}
+ else if(b.dataset.del){const w=words.find(x=>x.id===b.dataset.del);
+  if(w&&confirm('Opravdu smazat „'+w.en[0]+'“?')){words=words.filter(x=>x.id!==w.id);save();render()}}
+};
+$('search').oninput=render;
+
+$('export').onclick=()=>{
+ const blob=new Blob([JSON.stringify({format:'vocab-backup-v1',words},null,2)],{type:'application/json'});
+ const url=URL.createObjectURL(blob),a=document.createElement('a');
+ a.href=url;a.download='vocab-zaloha.json';document.body.appendChild(a);a.click();a.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+ $('backupMessage').textContent='Záloha připravena ke stažení.';$('backupMessage').className='good';
+};
+$('import').onchange=async e=>{
+ const f=e.target.files[0];if(!f)return;
+ try{
+  const data=JSON.parse(await f.text()),items=Array.isArray(data)?data:data.words;
+  if(!Array.isArray(items))throw Error();
+  const seen=new Set(words.map(key));let n=0,skip=0;
+  items.forEach(w=>{
+   if(!w)return;
+   const en=(Array.isArray(w.en)?w.en:[]).map(x=>String(x).trim()).filter(Boolean);
+   const cs=(Array.isArray(w.cs)?w.cs:[]).map(x=>String(x).trim()).filter(Boolean);
+   if(!en.length||!cs.length)return;
+   const c={id:uid(),en,cs,ok:w.ok|0,bad:w.bad|0},k=key(c);
+   if(seen.has(k)){skip++;return}
+   seen.add(k);words.push(c);n++;
+  });
+  save();render();
+  $('backupMessage').textContent='Importováno '+n+' slovíček'+(skip?', přeskočeno duplicit: '+skip:'')+'.';$('backupMessage').className='good';
+ }catch(x){$('backupMessage').textContent='Soubor není platná záloha VOCAB.';$('backupMessage').className='bad'}
+ e.target.value='';
+};
+
+if('serviceWorker' in navigator&&location.protocol!=='file:')addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
+save();question();
+</script></body></html>
